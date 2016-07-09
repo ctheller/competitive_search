@@ -103,11 +103,14 @@
 		var minimizingPlayer = (maximizingPlayer == 'x') ? 'o' : 'x';
 		//This is how you can retrieve the minimizing player.
 
-        var linesOfLengthTwoForX = state.numLines(2, 'x')
-        //An example 
+        var linesOfLengthTwoForMax = state.numLines(2, maximizingPlayer)
+        var linesOfLengthThreeForMax = state.numLines(3, maximizingPlayer)
 
-        //Your code here.  Don't return random, obviously.
-		return Math.random()
+    	var linesOfLengthTwoForMin = state.numLines(2, minimizingPlayer)
+        var linesOfLengthThreeForMin = state.numLines(3, minimizingPlayer)
+
+        return 2*linesOfLengthTwoForMax + 3*linesOfLengthThreeForMax - 2*linesOfLengthTwoForMin - 3*linesOfLengthThreeForMin;
+       
 	}
 
 
