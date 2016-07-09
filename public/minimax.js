@@ -54,8 +54,8 @@
 		var depth = 3
 		return max(allLegalMoves, function(move){
 			var potentialState = state.move(move)
-			return minimax(potentialState, depth, playerMoving)
-			//return minimaxAlphaBetaWrapper(potentialState, depth, playerMoving)
+			// return minimax(potentialState, depth, playerMoving)
+			return minimaxAlphaBetaWrapper(potentialState, depth, playerMoving)
 		});
 		// The guts of the make-move function.
 		// The function max(arr, func) returns the element
@@ -184,10 +184,44 @@
 	    player, if they play well, no matter what the maximizing player
 	    does; this is why it is a very high value to start with.
 		*/
+
+		var alpha;
+		var beta;
 		var minimaxAB = function(state, depth, alpha, beta){
+
+			var minimizingPlayer = (state.maximizingPlayer == 'x') ? 'o' : 'x';
+			var possibleStates = state.nextStates();
+			var currentPlayer = state.nextMovePlayer;
+			//Your code here.
+			if (!depth || !possibleStates.length) {
+				return heuristic(state, maximizingPlayer);
+			}
+
+			if (currentPlayer == maximizingPlayer) {
+				var result_possibilities = []
+				for (var i = 0; i<possibleStates.length; i++){
+					if (beta < alpha) break;
+					var result = minimaxAB(possibleStates[i], depth-1, alpha, beta)
+					if (alpha < result) alpha = result;
+					result_possibilities.push(result); 
+				}
+				return result_possibilities.sort(function(a,b){return b-a})[0];
+
+			} else {
+
+				var result_possibilities = []
+				for (var i = 0; i<possibleStates.length; i++){
+					if (beta < alpha) break;
+					var result = minimaxAB(possibleStates[i], depth-1, alpha, beta);
+					if (beta > result) beta = result;
+					result_possibilities.push(result); 
+				}
+				return result_possibilities.sort(function(a,b){return a-b})[0];
+			}
+
 		}
 
-		return minimaxAB(state, depth, -100000,100000)
+		return minimaxAB(state, depth, -100000,100000);
 	}	
 
 
