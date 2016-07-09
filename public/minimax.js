@@ -103,13 +103,19 @@
 		var minimizingPlayer = (maximizingPlayer == 'x') ? 'o' : 'x';
 		//This is how you can retrieve the minimizing player.
 
+		if (state.numLines(4, maximizingPlayer)) return 100;
+		if (state.numLines(4, minimizingPlayer)) return -100;
+
+
         var linesOfLengthTwoForMax = state.numLines(2, maximizingPlayer)
         var linesOfLengthThreeForMax = state.numLines(3, maximizingPlayer)
 
     	var linesOfLengthTwoForMin = state.numLines(2, minimizingPlayer)
         var linesOfLengthThreeForMin = state.numLines(3, minimizingPlayer)
+     
 
-        return 2*linesOfLengthTwoForMax + 3*linesOfLengthThreeForMax - 2*linesOfLengthTwoForMin - 3*linesOfLengthThreeForMin;
+        return 2*linesOfLengthTwoForMax + 8*linesOfLengthThreeForMax
+        	 - 2*linesOfLengthTwoForMin - 8*linesOfLengthThreeForMin;
        
 	}
 
@@ -142,7 +148,19 @@
 		var possibleStates = state.nextStates();
 		var currentPlayer = state.nextMovePlayer;
 		//Your code here.
-		return Math.random();
+		if (!depth || !possibleStates.length) return heuristic(state, maximizingPlayer)
+
+		var result_possibilities = []
+		possibleStates.forEach(function(oneState){
+			result_possibilities.push(minimax(oneState, depth-1, maximizingPlayer))
+		});
+
+		if (currentPlayer == maximizingPlayer) {
+			return result_possibilities.sort(function(a,b){return b-a})[0];
+		} else {
+			return result_possibilities.sort(function(a,b){return a-b})[0];
+		}
+
 	}
 
 
