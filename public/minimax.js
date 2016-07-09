@@ -184,9 +184,7 @@
 	    player, if they play well, no matter what the maximizing player
 	    does; this is why it is a very high value to start with.
 		*/
-
-		var alpha;
-		var beta;
+		
 		var minimaxAB = function(state, depth, alpha, beta){
 
 			var minimizingPlayer = (state.maximizingPlayer == 'x') ? 'o' : 'x';
